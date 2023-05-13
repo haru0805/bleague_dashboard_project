@@ -1,0 +1,316 @@
+{% load django_bootstrap5 %}
+{% load static %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Bleague Dashboard</title>
+    <link rel="stylesheet" href="{% static 'bleague_analysis/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'bleague_analysis/css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'bleague_analysis/css/datepicker3.css' %}">
+    <link rel="stylesheet" href="{% static 'bleague_analysis/css/styles.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	
+	<!--Custom Font-->
+	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+	<!--[if lt IE 9]>
+	<script src="js/html5shiv.js"></script>
+	<script src="js/respond.min.js"></script>
+	<![endif]-->
+</head>
+<body>
+	<nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#sidebar-collapse"><span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span></button>
+				<a class="navbar-brand" href="{% url 'top' %}"><span>B-league</span>Analysis</a>
+			</div>
+		</div><!-- /.container-fluid -->
+	</nav>
+    <div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
+        <div class="divider"></div>
+        <ul class="nav menu" style="display: flex; flex-direction: column;">
+            <li><a href="{% url 'top' %}"><em class="fa fa-dashboard">&nbsp;</em> 全体順位 </a></li>
+            <li><a href="{% url 'district_rankings' %}"><em class="fa fa-calendar">&nbsp;</em> 地区順位 </a></li>
+            <li class="active" class="parent "><a data-toggle="collapse" href="#sub-item-1">
+                <em class="fa fa-navicon">&nbsp;</em> チーム詳細 
+                <span data-toggle="collapse" href="#sub-item-1" class="icon pull-right"><em class="fa fa-plus"></em></span></a>
+                <ul class="children collapse" id="sub-item-1">
+                    {% for team in team_list %}
+                        <li><a class="" href="{% url 'team_detail' team.bleague_id %}">
+                            <span class="fa fa-arrow-right">&nbsp;</span> {{ team.name }}
+                        </a></li>
+                    {% endfor %}
+                </ul>
+            </li>
+            <li><a href="{% url 'district_rankings' %}"><em class="fa fa-calendar">&nbsp;</em> 選手詳細 </a></li>
+            <li><a href="{% url 'district_rankings' %}"><em class="fa fa-calendar">&nbsp;</em> 順位変動 </a></li>
+            <li><a href="{% url 'district_rankings' %}"><em class="fa fa-calendar">&nbsp;</em> 選手比較 </a></li>
+        </ul>
+    </div><!--/.sidebar-->
+		
+	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+		<div class="row">
+			<ol class="breadcrumb">
+				<li><a href="#">
+					<em class="fa fa-home"></em>
+				</a></li>
+				<li class="active">チーム詳細</li>
+			</ol>
+		</div><!--/.row-->
+		
+		<div class="row">
+			<div class="col-lg-12">
+				<h1 class="page-header">チーム詳細 {{ teams.name }}</h1>
+			</div>
+		</div><!--/.row-->
+
+		<div class="panel panel-container">
+			<div class="row">
+				<div class="col-xs-6 col-md-3 col-lg-3 no-padding">
+					<div class="panel panel-teal panel-widget border-right">
+						<div class="row no-padding"><em class="fa fa-xl fa-shopping-cart color-blue"></em>
+							<div class="large">{{ game_count }}</div>
+							<div class="text-muted">試合数</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-6 col-md-3 col-lg-3 no-padding">
+					<div class="panel panel-blue panel-widget border-right">
+						<div class="row no-padding"><em class="fa fa-xl fa-comments color-orange"></em>
+							<div class="large">{{ wins }}</div>
+							<div class="text-muted">勝利数</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-6 col-md-3 col-lg-3 no-padding">
+					<div class="panel panel-orange panel-widget border-right">
+						<div class="row no-padding"><em class="fa fa-xl fa-users color-teal"></em>
+							<div class="large">{{ loses }}</div>
+							<div class="text-muted">敗北数</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-6 col-md-3 col-lg-3 no-padding">
+					<div class="panel panel-red panel-widget ">
+						<div class="row no-padding"><em class="fa fa-xl fa-search color-red"></em>
+							<div class="large">{{ win_percentage|floatformat:2 }}</div>
+							<div class="text-muted">勝率</div>
+						</div>
+					</div>
+				</div>
+			</div><!--/.row-->
+            <div class="row">
+				<div class="col-xs-6 col-md-3 col-lg-3 no-padding">
+					<div class="panel panel-teal panel-widget border-right">
+						<div class="row no-padding"><em class="fa fa-xl fa-shopping-cart color-blue"></em>
+							<div class="large">{{ overall_rank }}位</div>
+							<div class="text-muted">全体順位</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-6 col-md-3 col-lg-3 no-padding">
+					<div class="panel panel-blue panel-widget border-right">
+						<div class="row no-padding"><em class="fa fa-xl fa-comments color-orange"></em>
+							<div class="large">{{ district_rank }}位</div>
+							<div class="text-muted">地区順位</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-6 col-md-3 col-lg-3 no-padding">
+					<div class="panel panel-orange panel-widget border-right">
+						<div class="row no-padding"><em class="fa fa-xl fa-users color-teal"></em>
+							<div class="large">{{ loses }}</div>
+							<div class="text-muted">平均得点</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-6 col-md-3 col-lg-3 no-padding">
+					<div class="panel panel-red panel-widget ">
+						<div class="row no-padding"><em class="fa fa-xl fa-search color-red"></em>
+							<div class="large">{{ win_percentage|floatformat:2 }}</div>
+							<div class="text-muted">平均失点</div>
+						</div>
+					</div>
+				</div>
+			</div><!--/.row-->
+		</div>
+
+        <div class="row">
+			<div class="col-xs-6 col-md-3">
+				<div class="panel panel-default">
+					<div class="panel-body easypiechart-panel">
+						<div class="easypiechart" id="easypiechart-blue" data-percent="30" ><span class="percent">{{ game_count }}</span></div>
+                        <h4>フィールドゴール成功率</h4>
+                    </div>
+				</div>
+			</div>
+			<div class="col-xs-6 col-md-3">
+				<div class="panel panel-default">
+					<div class="panel-body easypiechart-panel">
+						<div class="easypiechart" id="easypiechart-orange" data-percent="65" ><span class="percent">65%</span></div>
+                        <h4>３ポイント</h4>
+                    </div>
+				</div>
+			</div>
+			<div class="col-xs-6 col-md-3">
+				<div class="panel panel-default">
+					<div class="panel-body easypiechart-panel">
+						<div class="easypiechart" id="easypiechart-teal" data-percent="56" ><span class="percent">56%</span></div>
+						<h4>フリースロー</h4>
+                    </div>
+				</div>
+			</div>
+			<div class="col-xs-6 col-md-3">
+				<div class="panel panel-default">
+					<div class="panel-body easypiechart-panel">
+						<div class="easypiechart" id="easypiechart-red" data-percent="27" ><span class="percent">27%</span></div>
+                        <h4>勝率</h4>
+                    </div>
+				</div>
+			</div>
+		</div><!--/.row-->
+		
+
+		<div class="row">
+			<div class="col-md-12">
+				<div class="panel panel-default">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>日付</th>
+                                <th>ホームチーム</th>
+                                <th>Score</th>
+                                <th>Score</th>
+                                <th>アウェイチーム</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for game in page_obj %}
+                                <tr>
+                                    <td>{{ game.date }}</td>
+                                    <th><a href="{% url 'team_detail' game.own_team_id %}" class="team-link">{{ game.own_team.name}}</a></th>
+                                    <td>{{ game.own_score }}</td>
+                                    <td>{{ game.other_score }}</td>
+                                    <th><a href="{% url 'team_detail' game.other_team_id %}" class="team-link">{{ game.other_team.name }}</a></th>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                    <div class="col-md-12">
+                        <div class="pagination">
+                            <span class="step-links">
+                                {% if page_obj.has_previous %}
+                                    <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                                {% endif %}
+                    
+                    
+                                {% if page_obj.has_next %}
+                                    <a href="?page={{ page_obj.next_page_number }}">more</a>
+                                {% endif %}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div style="width: 80%; margin: 0 auto;">
+                        <canvas id="teamScoreChart"></canvas>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <table class="table table-hover">
+                        <tr>
+                            <th>選手名</th>
+                            <th>背番号</th>
+                            <th>ポジション</th>
+                        </tr>
+                        {% for player in players %}
+                        <tr>
+                            <th><a href="{% url 'player_detail' teams.bleague_id player.bleague_id %}" class="team-link">{{ player.name }}</a></th>
+                            <th>{{ player.number }}</th>
+                            <th>{{ player.position_id }}</th>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row">          
+                <script>
+                    // ゲームデータから得点数と失点数のリストを作成
+                    const scores = [];
+                    const concededScores = [];
+                    const dates = [];
+                
+                    {% for game in page_obj %}
+                        scores.push({{ game.own_score }});
+                        concededScores.push({{ game.other_score }});
+                        dates.push("{{ game.date }}");
+                    {% endfor %}
+                
+                    // グラフを描画
+                    const ctx = document.getElementById('teamScoreChart').getContext('2d');
+                    const teamScoreChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: dates,
+                            datasets: [
+                                {
+                                    label: '得点数',
+                                    data: scores,
+                                    borderColor: 'rgba(75, 192, 192, 1)',
+                                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                    borderWidth: 1
+                                },
+                                {
+                                    label: '失点数',
+                                    data: concededScores,
+                                    borderColor: 'rgba(255, 99, 132, 1)',
+                                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                    borderWidth: 1
+                                }
+                            ]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                </script>
+		</div><!--/.row-->
+	</div>	<!--/.main-->
+	
+	<script src="{% static 'bleague_analysis/js/jquery-1.11.1.min.js' %}"></script>
+	<script src="{% static 'bleague_analysis/js/bootstrap.min.js' %}"></script>
+	<script src="{% static 'bleague_analysis/js/chart.min.js' %}"></script>
+	<script src="{% static 'bleague_analysis/js/chart-data.js' %}"></script>
+	<script src="{% static 'bleague_analysis/js/easypiechart.js' %}"></script>
+	<script src="{% static 'bleague_analysis/js/easypiechart-data.js' %}"></script>
+	<script src="{% static 'bleague_analysis/js/bootstrap-datepicker.js' %}"></script>
+	<script src="{% static 'bleague_analysis/js/custom.js' %}"></script>
+	<script>
+		window.onload = function () {
+	var chart1 = document.getElementById("line-chart").getContext("2d");
+	window.myLine = new Chart(chart1).Line(lineChartData, {
+	responsive: true,
+	scaleLineColor: "rgba(0,0,0,.2)",
+	scaleGridLineColor: "rgba(0,0,0,.05)",
+	scaleFontColor: "#c5c7cc"
+	});
+};
+	</script>
+		
+</body>
+</html>

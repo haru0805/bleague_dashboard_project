@@ -1,0 +1,38 @@
+# .gitignore
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Python virtual environment
+venv/
+env/
+
+# Logs and databases
+*.log
+*.sqlite3
+my.cnf
+
+# Build and compile results
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+*.$py.class
+
+# Secret information
+.env
+
+# Dependency directories
+node_modules/
+dist/
+
+# IDE files
+.idea/
+*.swp
+*.swo
+*.swn
+.vscode/
+*.sublime-project
+*.sublime-workspace

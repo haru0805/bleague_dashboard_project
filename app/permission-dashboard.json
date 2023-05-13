@@ -1,0 +1,45 @@
+{
+    "Status": 200,
+    "DashboardId": "c8154fe3-4579-45f0-811b-b80429522fcc",
+    "DashboardArn": "arn:aws:quicksight:ap-northeast-1:693200896927:dashboard/c8154fe3-4579-45f0-811b-b80429522fcc",
+    "Permissions": [
+        {
+            "Principal": "arn:aws:quicksight:ap-northeast-1:693200896927:group/default/admin",
+            "Actions": [
+                "quicksight:DescribeDashboard",
+                "quicksight:ListDashboardVersions",
+                "quicksight:UpdateDashboardPermissions",
+                "quicksight:QueryDashboard",
+                "quicksight:UpdateDashboard",
+                "quicksight:DeleteDashboard",
+                "quicksight:DescribeDashboardPermissions",
+                "quicksight:UpdateDashboardPublishedVersion"
+            ]
+        },
+        {
+            "Principal": "arn:aws:quicksight:ap-northeast-1:693200896927:user/default/starter30d@mieru.cloud",
+            "Actions": [
+                "quicksight:DescribeDashboard",
+                "quicksight:ListDashboardVersions",
+                "quicksight:QueryDashboard"
+            ]
+        },
+        {
+            "Principal": "arn:aws:quicksight:ap-northeast-1:693200896927:user/default/haruharu1385@gmail.com",
+            "Actions": [
+                "quicksight:DescribeDashboard",
+                "quicksight:ListDashboardVersions",
+                "quicksight:UpdateDashboardPermissions",
+                "quicksight:QueryDashboard",
+                "quicksight:UpdateDashboard",
+                "quicksight:DeleteDashboard",
+                "quicksight:DescribeDashboardPermissions",
+                "quicksight:UpdateDashboardPublishedVersion"
+            ]
+        }
+    ],
+    "RequestId": "2f671ba2-15d3-4d72-a6a9-9dcb470c8097",
+    "LinkSharingConfiguration": {
+        "Permissions": []
+    }
+}
