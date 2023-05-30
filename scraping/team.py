@@ -43,7 +43,7 @@ mycursor = mydb.cursor()
 for d in list:
     sql = "INSERT INTO bleague_analysis_team (bleague_id, name, location, created_at, updated_at) VALUES (%s, %s, %s, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)"
     print(d)
-    mycursor.execute(sql, d)
+    # mycursor.execute(sql, d)
 
 
 mydb.commit()

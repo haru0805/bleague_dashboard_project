@@ -57,7 +57,7 @@ for team_id in team_ids:
     for d in list:
         sql = "INSERT INTO bleague_analysis_player (bleague_id, name, number, team_id, position_id, created_at, updated_at) VALUES (%s, %s, %s, %s, %s, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)"
         print(d)
-        mycursor.execute(sql, d)
+        # mycursor.execute(sql, d)
     time.sleep(10)
 
 mydb.commit()

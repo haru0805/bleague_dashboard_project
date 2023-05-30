@@ -36,3 +36,5 @@ dist/
 .vscode/
 *.sublime-project
 *.sublime-workspace
+
+scraping/
