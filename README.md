@@ -34,7 +34,7 @@
 
 ## システム構成図
 
-![System Diagram](URL_TO_DIAGRAM)
+![System Diagram](image/system.jpg)
 
 ## 使い方
 
