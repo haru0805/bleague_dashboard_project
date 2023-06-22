@@ -6,7 +6,7 @@
 
 このリポジトリは、バスケットボールの試合結果や選手のパフォーマンスに関するデータを分析するウェブサイトのソースコードです。Djangoフレームワークを基に開発されており、ユーザーフレンドリーなインターフェースと強力なデータ分析ツールを提供します。このアプリケーションはAWS EC2上で運用され、Gunicornとnginxを使用してホストされています。ドメイン管理にはAmazon Route 53を使用しています。
 
-![Screenshot](URL_TO_SCREENSHOT)
+![Screenshot](image/Screenshot.png)
 
 ## 目次
 
